@@ -1,0 +1,17 @@
+{
+  "name": "vendyx",
+  "version": "1.0.0",
+  "description": "VENDYX - A Modern E-commerce Platform",
+  "scripts": {
+    "client": "cd client && npm start",
+    "server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install"
+  },
+  "keywords": ["ecommerce", "marketplace", "vendyx"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
