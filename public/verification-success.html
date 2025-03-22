@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VENDYX - Verification Success</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/verification.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-2xl mx-auto px-4 py-8 text-center">
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check-circle text-4xl text-green-500"></i>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Verification Complete!</h1>
+            <p class="text-lg text-gray-600 mb-8">Your identity has been successfully verified. You now have full access to all features.</p>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-id-card text-blue-500 mr-3"></i>
+                        <span class="text-gray-700">Document Verification</span>
+                    </div>
+                    <i class="fas fa-check text-green-500"></i>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-fingerprint text-blue-500 mr-3"></i>
+                        <span class="text-gray-700">Biometric Verification</span>
+                    </div>
+                    <i class="fas fa-check text-green-500"></i>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-video text-blue-500 mr-3"></i>
+                        <span class="text-gray-700">Liveness Check</span>
+                    </div>
+                    <i class="fas fa-check text-green-500"></i>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <a href="/dashboard" class="btn btn-primary transform hover:scale-105 transition-transform duration-300">
+                    Go to Dashboard<i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="text-sm text-gray-500">
+            <p>Need help? <a href="/support" class="text-blue-600 hover:text-blue-700">Contact our support team</a></p>
+        </div>
+    </div>
+</body>
+</html>
