@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureXID Verification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/verification.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">SecureXID Verification</h1>
+            <p class="text-lg text-gray-600">Complete your identity verification to access all features</p>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator mb-8">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <div class="step-label">Document</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-label">Biometric</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-label">Liveness</div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-label">Review</div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+            <div id="progressBar" class="progress-bar bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+
+        <!-- Steps Counter -->
+        <div class="flex justify-between items-center mb-8">
+            <span id="currentStep" class="text-lg font-semibold text-blue-600">Step 1 of 4</span>
+            <span class="text-sm text-gray-500">Estimated time: 5-10 minutes</span>
+        </div>
+
+        <!-- Document Verification Step -->
+        <div id="documentStep" class="verification-step active bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-semibold mb-6">Document Verification</h2>
+            <div class="space-y-6">
+                <div class="upload-zone group cursor-pointer" id="dropZone" onclick="document.getElementById('documentUpload').click()">
+                    <div class="text-center relative p-8 border-2 border-dashed border-gray-300 rounded-lg transition-all duration-300 ease-in-out transform hover:border-blue-500 hover:bg-blue-50">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="bg-blue-500 bg-opacity-10 absolute inset-0 rounded-lg"></div>
+                            <i class="fas fa-cloud-upload-alt text-6xl text-blue-500"></i>
+                        </div>
+                        <i class="fas fa-id-card text-5xl text-gray-400 mb-4 group-hover:text-blue-500 transition-colors duration-300"></i>
+                        <h3 class="text-xl font-medium mb-2">Upload Identification Document</h3>
+                        <p class="text-gray-500 mb-6">Accepted formats: Passport, ID Card, Driver's License</p>
+                        <input type="file" id="documentUpload" accept="image/*,.pdf,.heic" class="hidden">
+                        <div class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300">
+                            <i class="fas fa-upload mr-2"></i>Choose File
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4">or drag and drop your document here</p>
+                        <p class="text-xs text-gray-400 mt-2">Maximum file size: 10MB</p>
+                    </div>
+                </div>
+
+                <div id="documentPreview" class="hidden bg-gray-50 rounded-lg p-6 mt-6">
+                    <div class="relative">
+                        <img id="documentImage" class="w-full max-h-64 object-contain rounded-lg mb-4 shadow-lg">
+                        <div class="absolute top-2 right-2">
+                            <button onclick="removeDocument()" class="bg-white p-2 rounded-full shadow-md hover:bg-red-50 text-red-600 hover:text-red-700 transition-all duration-300">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-4">
+                        <div class="flex items-center text-green-600">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span>Document uploaded successfully</span>
+                        </div>
+                        <button onclick="nextStep()" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300">
+                            Continue<i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biometric Verification Step -->
+        <div id="biometricStep" class="verification-step bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-semibold mb-6">Biometric Verification</h2>
+            <div class="space-y-6">
+                <div class="camera-feed">
+                    <video id="cameraFeed" autoplay playsinline class="w-full h-full object-cover"></video>
+                    <div class="camera-guide"></div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <button onclick="retakeBiometric()" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300">
+                        <i class="fas fa-redo mr-2"></i>Retake
+                    </button>
+                    <button onclick="startBiometricCapture()" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300">
+                        <i class="fas fa-camera mr-2"></i>Capture
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liveness Detection Step -->
+        <div id="livenessStep" class="verification-step bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-semibold mb-6">Liveness Detection</h2>
+            <div class="space-y-6">
+                <div class="camera-feed">
+                    <video id="livenessVideo" autoplay playsinline class="w-full h-full object-cover"></video>
+                    <div class="camera-guide"></div>
+                </div>
+                <div class="text-center">
+                    <p class="text-lg text-gray-700 mb-4">Please follow the instructions below:</p>
+                    <ol class="text-left space-y-2 mb-6">
+                        <li class="flex items-center text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Look straight at the camera
+                        </li>
+                        <li class="flex items-center text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Blink naturally when prompted
+                        </li>
+                        <li class="flex items-center text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Turn your head slightly when instructed
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Step -->
+        <div id="reviewStep" class="verification-step bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-semibold mb-6">Review & Submit</h2>
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium mb-4">Document Details</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-600">Type: <span class="text-gray-900">ID Card</span></p>
+                            <p class="text-gray-600">Status: <span class="text-green-600">Verified</span></p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium mb-4">Biometric Match</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-600">Status: <span class="text-green-600">Matched</span></p>
+                            <p class="text-gray-600">Confidence: <span class="text-gray-900">98%</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-8">
+                    <button onclick="previousStep()" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i>Back
+                    </button>
+                    <button onclick="submitVerification()" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300">
+                        Submit Verification<i class="fas fa-check ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/verification.js"></script>
+</body>
+</html>
