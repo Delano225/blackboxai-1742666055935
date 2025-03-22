@@ -1,0 +1,2 @@
+2025-03-22 16:12:59 info: Server running in development mode on port 5000
+2025-03-22 16:13:29 error: connect ECONNREFUSED 127.0.0.1:27017
